@@ -17,7 +17,6 @@
   
   Keywords: AMS powermeter, HAN port, OBIS, Mbus, COSEM, Domotizc, mysensors
   
-  JOHove
 
  ### Notes:
   Software serial can be used to test the parser,
