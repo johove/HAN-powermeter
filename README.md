@@ -70,3 +70,6 @@ AMS powermeter interface
   test power form the Mbus
   restructure the parser to a c++ class
   There is some isue witk tha last parts of the one hour massage, but it does not effect the data.
+
+
+![bilder](20190307_202741.jpg)
