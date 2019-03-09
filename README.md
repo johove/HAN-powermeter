@@ -38,13 +38,9 @@
 
 
   Hdlspackage = startmark, packagelen, frameheader, payload, FCC, endmark
-  
   startmark = endmark = “7E”
-  
   packagelen = 4 byte ; “A”, 12 bit integer
-  
   frameheader = 9 byte ; Not checked, ends with a crc
-  
   payload = dataheader, array, register*
   
   dataheader = “0f 40 00 00 00 00”  ; might not be fixed
