@@ -34,7 +34,7 @@
   This parser is a top down recursive parser driven by the grammar of the message,
   specified in the reference above.  The basic grammar is:
 
-  Hdlspackage = startmark, packagelen, frameheader, payload, FCC, endmark<br/>
+  Hdlcpackage = startmark, packagelen, frameheader, payload, FCC, endmark<br/>
   startmark = endmark = “7E”<br/>
   packagelen = 4 byte ; “A”, 12 bit integer<br/>
   frameheader = 9 byte ; Not checked, ends with a crc<br/>
