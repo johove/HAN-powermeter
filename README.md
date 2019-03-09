@@ -72,4 +72,4 @@ AMS powermeter interface
   There is some isue witk tha last parts of the one hour massage, but it does not effect the data.
 
 
-![bilder](20190307_202741.jpg)
+![bilder](bilder/20190307_202741.jpg)
