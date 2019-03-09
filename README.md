@@ -36,53 +36,33 @@
   This parser is a top down recursive parser driven by the grammar of the message,
   specified in the reference above.  The basic grammar is:
 
-
-  Hdlspackage = startmark, packagelen, frameheader, payload, FCC, endmark
-
-  startmark = endmark = “7E”
-
+  Hdlspackage = startmark, packagelen, frameheader, payload, FCC, endmark<br/>
+  startmark = endmark = “7E”<br/>
   packagelen = 4 byte ; “A”, 12 bit integer<br/>
   frameheader = 9 byte ; Not checked, ends with a crc<br/>
   payload = dataheader, array, register*<br/>
   dataheader = “0f 40 00 00 00 00”  ; might not be fixed<br/>
-  
-  array = «01», dataLen
-  
-  dataLen = 1 byte; Int
-  
-  register = structure, structureContent;
-  
-  structureContent = octetString, OBIScodeandContent  ; se code for details
+  array = «01», dataLen<br/>
+  dataLen = 1 byte; Int<br/>
+  register = structure, structureContent;<br/>
+  structureContent = octetString, OBIScodeandContent  ; se code for details<br/>
 
   ## Example:
 
-  Header   a0 2a 41 08 83 13 04 13 e6 e7 00 : FrameType: 10 FrameLength: 42
-  
-  DataHeader 0f 40 00 00 00 00
-  
-  Type & Len 01 01
-
-  02 03  : Structur – 3  
-  
-  09 06  : ocet-string len 6
-  
-  01 00 01 07 00 ff : OBIS kode  '1.0.1.7.0.255
-  
-  06  : double-long-unsigned   (32bit)
-  
-  00 00 06 44  : dec 1604
-  
-  02 02 : Structur – 2 
-  
-  0f  Int8 
-  
-  00 : 0 
-  
-  16  : enum  
-  
-  1b : Watt active power
-  
-  6f 92  CRC
+  Header   a0 2a 41 08 83 13 04 13 e6 e7 00 : FrameType: 10 FrameLength: 42<br/>
+  DataHeader 0f 40 00 00 00 00<br/>
+  Type & Len 01 01<br/>
+  02 03  : Structur – 3  <br/>
+  09 06  : ocet-string len 6<br/>
+  01 00 01 07 00 ff : OBIS kode  '1.0.1.7.0.255<br/>
+  06  : double-long-unsigned   (32bit)<br/>
+  00 00 06 44  : dec 1604<br/>
+  02 02 : Structur – 2 <br/>
+  0f  Int8 <br/>
+  00 : 0 <br/>
+  16  : enum  <br/>
+  1b : Watt active power<br/>
+  6f 92  CRC<br/>
 
   ----
   TODO: CRC is not checked,
@@ -94,7 +74,6 @@
   There is some isue witk tha last parts of the one hour massage, but it does not effect the data.
 
 ## Hardware
-
 
 ![bilde1](bilder/20190307_202741.jpg)
 ![bilde2](bilder//20190307_203608.jpg)
