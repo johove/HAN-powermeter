@@ -1,4 +1,4 @@
-# Han-powermeter
+# Han-power meter
 AMS powermeter interface 
 
   Norwegian AMS power meter sensor/adapter for MySensors and controllers like Domoticz
