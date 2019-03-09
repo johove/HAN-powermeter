@@ -1,7 +1,6 @@
 # Han-power meter
-AMS powermeter interface 
 
-  Norwegian AMS power meter sensor/adapter for MySensors and controllers like Domoticz
+ ## Norwegian AMS power meter sensor/adapter for MySensors and controllers like Domoticz
   
   This is a sensornode for Mysensor, it has a parser that read OBIS codes and meter data from the HAN port of a Norwegian Aidon power meter.
   The parser read the Norwegian HAM code specification - OBIS codes.
@@ -18,9 +17,9 @@ AMS powermeter interface
   
   Keywords: AMS powermeter, HAN port, OBIS, Mbus, COSEM, Domotizc, mysensors
   
-  Jon Ola Hove
+  JOHove
 
-  Notes:
+ ### Notes:
   Software serial can be used to test the parser,
   but on a 3.3V on 8Mhz this might be to slow when parsing the one hour message, use rx tx. 
   
@@ -47,7 +46,7 @@ AMS powermeter interface
   register = structure, structureContent;
   structureContent = octetString, OBIScodeandContent  ; se code for details
 
-  Example:
+  ## Example:
 
   Header   a0 2a 41 08 83 13 04 13 e6 e7 00 : FrameType: 10 FrameLength: 42
   DataHeader 0f 40 00 00 00 00
