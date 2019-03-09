@@ -38,20 +38,31 @@
 
 
   Hdlspackage = startmark, packagelen, frameheader, payload, FCC, endmark
+  
   startmark = endmark = “7E”
+  
   packagelen = 4 byte ; “A”, 12 bit integer
+  
   frameheader = 9 byte ; Not checked, ends with a crc
+  
   payload = dataheader, array, register*
+  
   dataheader = “0f 40 00 00 00 00”  ; might not be fixed
+  
   array = «01», dataLen
+  
   dataLen = 1 byte; Int
+  
   register = structure, structureContent;
+  
   structureContent = octetString, OBIScodeandContent  ; se code for details
 
   ## Example:
 
   Header   a0 2a 41 08 83 13 04 13 e6 e7 00 : FrameType: 10 FrameLength: 42
+  
   DataHeader 0f 40 00 00 00 00
+  
   Type & Len 01 01
 
   02 03  : Structur – 3  
@@ -68,8 +79,11 @@
 
   ----
   TODO: CRC is not checked,
+  
   test power form the Mbus
+  
   restructure the parser to a c++ class
+  
   There is some isue witk tha last parts of the one hour massage, but it does not effect the data.
 
 ## Hardware
