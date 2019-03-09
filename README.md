@@ -6,7 +6,7 @@
   
   The parser decode a Mbus datastream according to the Norwegian HAM code specification - OBIS codes.
   This adapter is relativ generic idedependent of the order and content of each message and record.
-  ###Specification:
+  ### Specification:
   Ref https://www.nek.no/wp-content/uploads/2018/11/Aidon-HAN-Interface-Description-v10A-ID-34331.pdf
   and EXCERPT DLMS UA Blue Book: COSEM interface classes and OBIS identification system, EXCERPT DLMS UA 1000-1 Ed. 12.0
   
