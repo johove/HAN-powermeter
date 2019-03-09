@@ -66,15 +66,25 @@
   Type & Len 01 01
 
   02 03  : Structur – 3  
+  
   09 06  : ocet-string len 6
+  
   01 00 01 07 00 ff : OBIS kode  '1.0.1.7.0.255
+  
   06  : double-long-unsigned   (32bit)
+  
   00 00 06 44  : dec 1604
+  
   02 02 : Structur – 2 
+  
   0f  Int8 
+  
   00 : 0 
+  
   16  : enum  
+  
   1b : Watt active power
+  
   6f 92  CRC
 
   ----
