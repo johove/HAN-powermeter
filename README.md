@@ -1,6 +1,4 @@
-# Han-power meter
-
- ## Norwegian AMS power meter sensor/adapter for MySensors and controllers like Domoticz
+# Norwegian AMS power meter sensor/adapter for MySensors and controllers like Domoticz
   
   Implemetation of sensornode for Mysensor, a parser that read OBIS codes and meter data from the HAN port of a Norwegian Aidon power meter and a minimalistic ardino like prosessor to run it.
   
