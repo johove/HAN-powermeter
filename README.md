@@ -72,14 +72,14 @@
   restructure the parser to a c++ class
   There is some isue witk tha last parts of the one hour massage, but it does not effect the data.
 
-##Hardware
+## Hardware
 
 
 ![bilde1](bilder/20190307_202741.jpg)
 ![bilde2](bilder//20190307_203608.jpg)
 ![bilde3](bilder//20190307_203939.jpg)
 
-##Power meter in Domoticz 
+## Power meter in Domoticz 
 
 ![bilde1](bilder/Screenshot_20190305-125031_Chrome.jpg)
 ![bilde2](bilder/Screenshot_20190305-125121_Chrome.jpg)
