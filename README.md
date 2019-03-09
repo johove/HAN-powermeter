@@ -69,7 +69,7 @@
   
   restructure the parser to a c++ class
   
-  There is some isue witk tha last parts of the one hour massage, but it does not effect the data.
+  There is a isue  with parcing the last parts of the "one hour message", but it does not effect the data.
 
 ## Hardware
 
