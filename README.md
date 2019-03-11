@@ -107,8 +107,7 @@ A13E410883137F8EE6E700<br/>  //length 318
 14. 0203 0906 0100040800FF 06 0000FB60 0202 0F01 1620<br/>
 15. 166C 7E
 
-data: 
------Record----
+#### data: 
 MeterID:123456789012<br/>
 MeterType:6515<br/>
 OBISVersion:AIDON_V0001<br/>
