@@ -1,6 +1,6 @@
 # Norwegian AMS power meter sensor/adapter for MySensors and controlers like Domoticz
   
-  Implemetation of sensornode for Mysensor, a parser that read OBIS codes and meter data from the HAN port of a Norwegian Aidon power meter and a minimalistic ardino like prosessor to run it.
+  Implemetation of sensornode for Mysensor, a parser that read OBIS codes and meter data from the HAN port of a Norwegian Aidon power meter.  Can run on and a 8 mHz  low power Ardino.
   
   Tested on a Hafslund and on Eidsiva power meter
   
@@ -15,7 +15,7 @@
   The Adapter is tested with Hafslund Aidon meter, a arduino my sensor node and a Mbus adapter:
   https://www.ebay.com/itm/TSS721A-Breakout-Module-with-Isolation/113359924361?hash=item1a64c72c89:g:gS0AAOSwF31b5paL:rk:4:pf:0
 
-  The arduino MySensor node is connected to a rasperry Domoticz controller via a 2.4 Mhz mesh network. Ref mySensor.org
+  The arduino MySensor node is connected to a Rasperry Domoticz controler via a 2.4 Mhz mesh network. Ref mySensor.org
   
   Keywords: AMS powermeter, HAN port, OBIS, Mbus, COSEM, Domotizc, mysensors
   
@@ -24,15 +24,15 @@
   Software serial can be used to test the parser,
   but on a 3.3V on 8Mhz this might be to slow when parsing the one hour message, use rx tx. 
   
-  The 8mhz arduino is of this type:
+  The low power 8mhz Arduino is of this type:
   https://forum.mysensors.org/topic/2067/my-slim-2aa-battery-node
   
   This Arduno can probably be powered from the Mbus interface. This is not tested.
-  Currently the card is powered with 3.3V via a step-down regulator from 5 v, it consumed 35ma, including loss in the regulator.
+  Currently the card is powered with 3.3V via a step-down regulator from 5 v, it consumes 35ma, including loss in the regulator.
 
   The mysensors data is sent in senddata().
 
-  This parser is a top down recursive parser driven by the grammar of the message,
+  This parser is a "top down" recursive parser driven by the grammar of the message,
   specified in the reference above.  The basic grammar is:
 
   Hdlcpackage = startmark, packagelen, frameheader, payload, FCC, endmark<br/>
