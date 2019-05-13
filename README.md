@@ -2,7 +2,7 @@
   
   Implemetation of sensornode for Mysensor, a parser that read OBIS codes and meter data from the HAN port of a Norwegian Aidon power meter and a minimalistic ardino like prosessor to run it.
   
-  Tested on a Hafslund metter and on Eidsiva
+  Tested on a Hafslund and on Eidsiva power meter
   
   The parser decode a Mbus datastream according to the Norwegian HANcode specification - OBIS codes.
   This adapter is relativ generic, independent of the order and content of each message and record.
