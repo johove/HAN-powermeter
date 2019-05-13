@@ -1,30 +1,30 @@
 /*
   Norwegian AMS power meter sensor/adapter for MySensors and controllers like Domoticz
-  
+
   This is a sensornode for Mysensor, it has a parser that read OBIS codes and meter data from the HAN port of a Norwegian Aidon power meter.
   The parser read the Norwegian HAM code specification - OBIS codes.
   This adapter parses the format according to the format specification and mostly independent of order and content of each message and record.
   Ref https://www.nek.no/wp-content/uploads/2018/11/Aidon-HAN-Interface-Description-v10A-ID-34331.pdf
   and EXCERPT DLMS UA Blue Book: COSEM interface classes and OBIS identification system, EXCERPT DLMS UA 1000-1 Ed. 12.0
-  
-  Hardware is an arduino that reads a serial data stream form a Mbus to ttl adapter.  
+
+  Hardware is an arduino that reads a serial data stream form a Mbus to ttl adapter.
   The MBus converter is connected to the HAN port of the power meter.
   The Adapter is tested with Hafslund Aidon meter, a arduino my sensor node and a Mbus adapter:
   https://www.ebay.com/itm/TSS721A-Breakout-Module-with-Isolation/113359924361?hash=item1a64c72c89:g:gS0AAOSwF31b5paL:rk:4:pf:0
 
   The arduino MySensor node is connected to a rasperry Domoticz controller via a 2.4 Mhz mesh network. Ref mySensor.org
-  
+
   Keywords: AMS powermeter, HAN port, OBIS, Mbus, COSEM, Domotizc, mysensors
-  
+
   Jon Ola Hove
 
   Notes:
   Software serial can be used to test the parser,
-  but on a 3.3V on 8Mhz this might be to slow when parsing the one hour message, use rx tx. 
-  
+  but on a 3.3V on 8Mhz this might be to slow when parsing the one hour message, use rx tx.
+
   The 8mhz arduino is of this type:
   https://forum.mysensors.org/topic/2067/my-slim-2aa-battery-node
-  
+
   This Arduno can probably be powered from the Mbus interface. This is not tested.
   Currently the card is powered with 3.3V via a step-down regulator from 5 v, it consumed 35ma, including loss in the regulator.
 
@@ -85,7 +85,7 @@
 // My sensors
 #define MY_RADIO_NRF24
 
-//#define MY_RF24_CHANNEL  84
+#define MY_RF24_CHANNEL  84
 //###########################
 //#define MY_DEBUG
 //###########################
@@ -93,7 +93,9 @@
 // power your radio separately with a good regulator you can turn up PA level.
 #define MY_RF24_PA_LEVEL RF24_PA_HIGH
 #define PoWCHILD_ID 1              // Id of the sensor child
-
+#define PoWCHILD_ID2 2              // Id of the sensor child phase 2
+#define PoWCHILD_ID3 3              // Id of the sensor child phase 3
+#define threePhase                  // if my sensors devices for phase 2 and 3 sholud be defined
 #define useMySensors      // If on compile mysensor 
 
 #ifdef useMySensors
@@ -105,7 +107,7 @@
 // Note: Can not use all debug options simultanious due to memory limitations in arduino
 //#define MY_DEBUG2
 //#define MY_DEBUG1     // list recieved data form the HAN port on Serial
-//#define MY_DEBUG3  
+//#define MY_DEBUG3
 //#define MY_ERROR
 
 #ifdef MY_DEBUG1
@@ -135,7 +137,7 @@
 #define DEBUG2_PRINTDEC(x)
 #define DEBUG2_PRINTHEX(x)
 #define DEBUG2_PRINTLN(x)
-#define buffMaxLen 400
+#define buffMaxLen 500
 #endif
 
 #ifdef MY_DEBUG3
@@ -163,7 +165,7 @@
 #define ERROR_PRINTLN(x)
 #endif
 //---------------------------------------
-#ifdef useSoftSerial  
+#ifdef useSoftSerial
 #include <SoftwareSerial.h>
 #endif
 
@@ -193,7 +195,7 @@ float currentL1 = 0;
 float currentL2 = 0;
 float currentL3 = 0;
 
-byte clockAndTime[12];  // 
+byte clockAndTime[12];  //
 float phaseVL1 = 0;
 float phaseVL2 = 0;
 float phaseVL3 = 0;
@@ -212,12 +214,17 @@ byte buffer[buffMaxLen];
 // My Sensors
 
 #ifdef useMySensors
-MyMessage wattMsg(PoWCHILD_ID, V_WATT);
+MyMessage wattMsgF1(PoWCHILD_ID, V_WATT);
+MyMessage wattMsgF2(PoWCHILD_ID2, V_WATT);  // phase 2
 MyMessage kwhMsg(PoWCHILD_ID, V_KWH);
 MyMessage reavtMsg(PoWCHILD_ID, V_VAR);  // reactive , finner ikke denne i Domoticz?
-MyMessage ampMsg(PoWCHILD_ID, V_VA);  //
+MyMessage ampMsgF1(PoWCHILD_ID, V_VA);  //
+MyMessage ampMsgF2(PoWCHILD_ID2, V_VA);  //
+MyMessage ampMsgF3(PoWCHILD_ID3, V_VA);  //
 MyMessage factorMsg(PoWCHILD_ID, V_POWER_FACTOR);
-MyMessage voltMsg(PoWCHILD_ID, V_VOLTAGE);
+MyMessage voltMsgF1(PoWCHILD_ID, V_VOLTAGE);
+MyMessage voltMsgF2(PoWCHILD_ID2, V_VOLTAGE);
+MyMessage voltMsgF3(PoWCHILD_ID3, V_VOLTAGE);
 #endif
 
 // My sensor
@@ -230,6 +237,10 @@ void presentation()
 
   // Register this device as power sensor
   present(PoWCHILD_ID, S_POWER);
+#ifdef  threePhase
+  present(PoWCHILD_ID2, S_POWER);
+  present(PoWCHILD_ID3, S_POWER);
+#endif
 }
 #endif
 
@@ -267,7 +278,10 @@ void parceHDLCPackage() {
   DEBUG_PRINTLN("start rec: ---");
   readFrame();  // read raw data
   DEBUG_PRINTLN("buffer;");
-  DEBUG_CODE(for (int i = 0; i < bufferlen; i++) {if (buffer [i] < 16) Serial.print('0'); DEBUG_PRINTHEX(buffer [i]); });
+  DEBUG_CODE(for (int i = 0; i < bufferlen; i++) {
+  if (buffer [i] < 16) Serial.print('0');
+    DEBUG_PRINTHEX(buffer [i]);
+  });
   DEBUG_PRINTLN();
   if (!testEndMark()) ERROR_PRINT("NoEnd") ;//same mark at end og package
 
@@ -480,29 +494,37 @@ void moveData() {
 }
 
 void sendData() {
-  /*
-    MyMessage wattMsg(PoWCHILD_ID, V_WATT);
-    MyMessage kwhMsg(PoWCHILD_ID, V_KWH);
-    MyMessage reavtMsg(PoWCHILD_ID, V_VAR);  // reactive ?
-    MyMessage ampMsg(PoWCHILD_ID, V_VA);  //
-    MyMessage factorMsg(PoWCHILD_ID, V_POWER_FACTOR);
-    MyMessage voltMsg(PoWCHILD_ID, V_VOLTAGE);
-  */
+
 #ifdef useMySensors
   if (activePowerQ1Q4 != 0) {
-    send(wattMsg.set(activePowerQ1Q4));
+    send(wattMsgF1.set(activePowerQ1Q4));
+  }
+  if (activePowerQ2Q3 != 0) {
+    send(wattMsgF2.set(activePowerQ2Q3));
   }
   if (cumulativActiveIm != 0) {
     send(kwhMsg.set((float)cumulativActiveIm / 100.0, 2));
   }
   if (currentL1 != 0) {
-    send(ampMsg.set(currentL1, 2));
+    send(ampMsgF1.set(currentL1, 2));
+  }
+  if (currentL2 != 0) {
+    send(ampMsgF2.set(currentL2, 2));
+  }
+  if (currentL3 != 0) {
+    send(ampMsgF3.set(currentL3, 2));
   }
   if (reactivePowerQ1Q2 != 0) {
     send(reavtMsg.set(reactivePowerQ1Q2));
   }
   if (phaseVL1 != 0) {
-    send(voltMsg.set(phaseVL1, 2));
+    send(voltMsgF1.set(phaseVL1, 2));
+  }
+  if (phaseVL2 != 0) {
+    send(voltMsgF2.set(phaseVL2, 2));
+  }
+  if (phaseVL2 != 0) {
+    send(voltMsgF3.set(phaseVL3, 2));
   }
   if ((reactivePowerQ1Q2 != 0) && (activePowerQ1Q4 != 0)) {
     send(factorMsg.set((float) reactivePowerQ1Q2 / (float)activePowerQ1Q4, 2));
