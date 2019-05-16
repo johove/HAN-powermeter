@@ -661,7 +661,7 @@ boolean testEndMark() {
 
 boolean readPackegeLen() { //packagelen = 2 bytes ; “a”, 12 bit integer
   int c1 = readByte();
-  if (c1 ^ 0xF0 == 0xa0) {
+  if (c1 ^ 0xF0 == 0xa0) {  // BUG, but works: This expresion always evaluates to true, should be ((c1 & 0xF0) == 0xa0).  Not tested
     DEBUG2_PRINT(" Len mrk:"); DEBUG2_PRINTHEX(c1);
     int c2 = readByte();
     bufferlen =  c2 | (c1 & 0x0F) << 8;
